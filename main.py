@@ -17,8 +17,11 @@ from google.cloud import firestore
 import time
 
 
+firebase_config = json.loads(st.secrets["firebase"]["credentials"])
+
+# Initialize Firebase
 if not firebase_admin._apps:
-    cred = credentials.Certificate('cloud/cloud.json')
+    cred = credentials.Certificate(firebase_config)
     firebase_admin.initialize_app(cred, {
         'databaseURL': 'https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app/'
     })
