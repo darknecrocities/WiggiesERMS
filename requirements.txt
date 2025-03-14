@@ -1,0 +1,9 @@
+streamlit
+numpy
+pandas
+matplotlib
+seaborn
+firebase-admin
+google-cloud-firestore
+requests
+xlsxwriter
