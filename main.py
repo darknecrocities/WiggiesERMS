@@ -17,14 +17,26 @@ from google.cloud import firestore
 import time
 
 
-firebase_config = json.loads(st.secrets["firebase"]["credentials"])
+config_path = os.path.expanduser("~/.config/wiggies/cloud.json")
 
-# Initialize Firebase
+# Load and verify the JSON credentials
+try:
+    with open(config_path, 'r') as file:
+        firebase_config = json.load(file)  # Ensure it's correctly loaded as a dictionary
+except Exception as e:
+    print(f"Error loading Firebase credentials: {e}")
+    exit(1)
+
+# Initialize Firebase app if not already initialized
 if not firebase_admin._apps:
-    cred = credentials.Certificate(firebase_config)
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app/'
-    })
+    try:
+        cred = credentials.Certificate(firebase_config)
+        firebase_admin.initialize_app(cred, {
+            'databaseURL': 'https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app/'
+        })
+        print("Firebase initialized successfully!")
+    except ValueError as ve:
+        print(f"Failed to initialize Firebase: {ve}")
 
 def keep_alive(url, interval):
     while True:
