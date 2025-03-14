@@ -7,4 +7,3 @@ firebase-admin
 google-cloud-firestore
 requests
 xlsxwriter
-os
