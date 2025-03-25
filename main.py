@@ -22,6 +22,9 @@ import subprocess
 import multiprocessing
 import random
 
+sqlite3.register_adapter(datetime.date, lambda d: d.isoformat())
+sqlite3.register_converter("DATE", lambda s: datetime.date.fromisoformat(s.decode()))
+
 FIREBASE_DATABASE_URL = "https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app"
 
 if not FIREBASE_DATABASE_URL:
