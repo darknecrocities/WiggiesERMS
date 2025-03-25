@@ -7,3 +7,4 @@ firebase-admin
 google-cloud-firestore
 requests
 xlsxwriter
+python-dotenv
