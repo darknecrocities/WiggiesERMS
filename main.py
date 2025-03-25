@@ -22,12 +22,21 @@ import subprocess
 import multiprocessing
 import random
 
-if not firebase_admin._apps:
-    cred = credentials.Certificate(os.path.expanduser("~/.config/wiggies/cloud.json"))
-    firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app/'
-    })
+FIREBASE_DATABASE_URL = "https://wiggies-523d3-default-rtdb.asia-southeast1.firebasedatabase.app"
 
+if not FIREBASE_DATABASE_URL:
+    raise ValueError("Missing Firebase Database URL.")
+
+def fetch_realtime_data():
+    """Fetch real-time sales data from Firebase using REST API."""
+    url = f"{FIREBASE_DATABASE_URL}/sales"  # Firebase REST API endpoint
+    response = requests.get(url)
+
+    if response.status_code == 200 and response.json():
+        return response.json()
+    else:
+        print("Failed to fetch data:", response.text)
+        return {}
 def keep_alive(url, interval):
     while True:
         try:
@@ -57,17 +66,6 @@ def show_available_sales():
     available_sales = set(firebase_sales + sql_sales)
     
     return available_sales
-
-def fetch_firebase_data():
-    ref = db.reference('sales_data')  # Make sure the reference path is correct
-    data = ref.get()  # Retrieve data
-
-    if data:
-        # Convert data into a DataFrame (adjust based on data structure)
-        firebase_df = pd.DataFrame.from_dict(data, orient='index')
-        return firebase_df
-    else:
-        return pd.DataFrame()
     
 def add_sale_to_firebase(product_name, quantity, date):
     ref = db.reference('sales')
