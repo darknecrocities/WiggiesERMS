@@ -29,7 +29,7 @@ if not FIREBASE_DATABASE_URL:
 
 def fetch_realtime_data():
     """Fetch real-time sales data from Firebase using REST API."""
-    url = f"{FIREBASE_DATABASE_URL}/sales_data"  # Firebase REST API endpoint
+    url = f"{FIREBASE_DATABASE_URL}/sales"  # Firebase REST API endpoint
     response = requests.get(url)
 
     if response.status_code == 200 and response.json():
@@ -47,28 +47,32 @@ def keep_alive(url, interval):
         time.sleep(interval)
     
 def show_available_sales():
-    """Show available sales from both Firebase and SQL Database."""
+    """Show available sales from both Firebase and SQL Database with product IDs."""
+    firebase_sales = {}
+    sql_sales = {}
+
     # Fetch sales from Firebase
-    firebase_sales = []
-    sale_ref = db.reference('sales_data')
+    sale_ref = db.reference('sales')
     all_sales = sale_ref.get()
+
     if all_sales:
-        firebase_sales = [sale_id for sale_id in all_sales.keys()]
-    
+        for sale_id, data in all_sales.items():
+            product_id = data.get("product_id")  # Only get sales with product_id
+            if product_id is not None:  # Ensure product_id exists
+                firebase_sales[sale_id] = product_id
+
     # Fetch sales from SQL
     conn = create_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id FROM sales")
-    sql_sales = [row[0] for row in cursor.fetchall()]
+    cursor.execute("SELECT id, product_id FROM sales")
+    sql_sales_raw = cursor.fetchall()  # List of tuples (sale_id, product_id)
     conn.close()
 
-    # Combine both Firebase and SQL sales and return the list
-    available_sales = set(firebase_sales + sql_sales)
-    
-    return available_sales
-    
-def add_sale_to_firebase(product_name, quantity, date):
-    ref = db.reference('sales')
+    for sale_id, product_id in sql_sales_raw:
+        sql_sales[sale_id] = product_id
+
+    return firebase_sales, sql_sales  # Returns two separate dictionaries
+
 
 # Function to fetch data in real-time
 def fetch_realtime_data():
@@ -315,7 +319,7 @@ def add_sale(product_name, quantity, date):
     }
 
     # Reference to Firebase database
-    ref = db.reference('sales_data')
+    ref = db.reference('sales')
     ref.push(sale_data)  # Push new sale data
 
     # Close SQL connection
@@ -356,42 +360,40 @@ def edit_sale(sale_id, new_quantity, new_date):
         st.error("Sale ID not found!")
 
 # Function to delete a sale
-def delete_sale(sale_id):
-    # Initialize success flag
+def delete_sale_by_product_id(product_id, sales_data):
+    """Delete all sales that match the given product ID."""
     success = False
+    
+    # Check and delete from Firebase
+    sale_ref = db.reference('sales')
+    all_sales = sale_ref.get()
+    
+    if all_sales:
+        for sale_id, prod_id in all_sales.items():
+            if prod_id == product_id:
+                db.reference(f'sales/{sale_id}').delete()
+                st.success(f"Sale {sale_id} deleted from Firebase!")
+                success = True
 
-    # Check and delete from Firebase Realtime Database
-    sale_ref = db.reference(f'sales/{sale_id}')
-    sale_data = sale_ref.get()
-
-    if sale_data:
-        # Sale exists in Firebase, delete it
-        sale_ref.delete()
-        st.success(f"Sale {sale_id} deleted successfully from Firebase!")
-        success = True
-    else:
-        st.error(f"Sale {sale_id} not found in Firebase!")
-
-    # Now check and delete from SQL database
+    # Check and delete from SQL
     conn = create_connection()
     cursor = conn.cursor()
 
-    cursor.execute("SELECT id FROM sales WHERE id = ?", (sale_id,))
-    sale_data_sql = cursor.fetchone()
+    cursor.execute("SELECT id FROM sales WHERE product_id = ?", (product_id,))
+    sales_to_delete = cursor.fetchall()
 
-    if sale_data_sql:
-        # Sale exists in SQL, delete it
-        cursor.execute("DELETE FROM sales WHERE id = ?", (sale_id,))
+    if sales_to_delete:
+        cursor.execute("DELETE FROM sales WHERE product_id = ?", (product_id,))
         conn.commit()
-        conn.close()
-        st.success(f"Sale {sale_id} deleted successfully from SQL database!")
+        st.success(f"All sales for product {product_id} deleted from SQL!")
         success = True
-    else:
-        st.error(f"Sale {sale_id} not found in SQL database!")
 
-    # Check if deletion was successful in both places
+    conn.close()
+
     if not success:
-        st.error(f"Sale {sale_id} not found in either Firebase or SQL database!")
+        st.error(f"No sales found for product {product_id} in either database.")
+
+
         
 def get_products():
     conn = create_connection()
@@ -611,7 +613,6 @@ def main():
             date = st.date_input("Date of Sale")
             if st.button("Add Sale"):
                 add_sale(product_name, quantity, date)
-                add_sale_to_firebase(product_name, quantity, date)
 
         elif choice == "Edit Sale":
             st.subheader("Edit an Existing Sale")
@@ -636,17 +637,20 @@ def main():
             export_to_excel()
 
         elif choice == "Delete Sale":
-            available_sales = list(show_available_sales())  # Get available sales for dropdown
-            if available_sales:
-                # Dropdown or selectbox for sale ID with search
-                sale_id_to_delete = st.selectbox('Select Sale ID to Delete:', available_sales)
+            available_sales = show_available_sales()  # Get sales data
+            merged_sales = {}  # Flatten sales data
+            for sales_dict in available_sales:
+                merged_sales.update(sales_dict)
 
-                # Button to trigger deletion
+            if merged_sales:
+                product_ids = list(set(merged_sales.values()))  # Get unique product IDs
+                product_id_to_delete = st.selectbox('Select Product ID to Delete:', product_ids)
+
                 if st.button('Delete Sale'):
-                    delete_sale(sale_id_to_delete)
+                    delete_sale_by_product_id(product_id_to_delete, merged_sales)  # Pass both arguments
             else:
                 st.write("No sales available for deletion.")
-        
+
         elif choice == "Sign Out":
             signout()
             st.rerun()
