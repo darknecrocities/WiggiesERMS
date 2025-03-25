@@ -217,6 +217,10 @@ def create_connection():
     return sqlite3.connect("database.db")
 
 def initialize_database():
+    if not firebase_admin._apps:
+        firebase_admin.initialize_app(options={
+            'databaseURL': FIREBASE_DATABASE_URL
+        })
     conn = create_connection()
     cursor = conn.cursor()
 
