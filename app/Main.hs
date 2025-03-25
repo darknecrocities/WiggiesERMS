@@ -3,6 +3,7 @@
 import Database.SQLite.Simple
 import Database.SQLite.Simple.FromRow
 import Control.Exception (bracket_)
+import System.Mem (performGC)  -- Import garbage collection function
 
 -- Function to create and initialize the database
 initializeDatabase :: IO ()
@@ -12,6 +13,7 @@ initializeDatabase = do
     execute_ conn createSalesTable
     checkAndInsertProducts conn
     close conn  -- Close the database connection
+    performGC  -- Force garbage collection after closing connection
 
 -- SQL statement to create 'products' table
 createProductsTable :: Query
@@ -72,4 +74,6 @@ checkAndInsertProducts conn = do
 
 -- Main function to run the database initialization
 main :: IO ()
-main = initializeDatabase
+main = do
+    initializeDatabase
+    performGC  -- Ensure garbage collection is triggered after all operations
