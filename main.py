@@ -29,7 +29,7 @@ if not FIREBASE_DATABASE_URL:
 
 def fetch_realtime_data():
     """Fetch real-time sales data from Firebase using REST API."""
-    url = f"{FIREBASE_DATABASE_URL}/sales"  # Firebase REST API endpoint
+    url = f"{FIREBASE_DATABASE_URL}/sales_data"  # Firebase REST API endpoint
     response = requests.get(url)
 
     if response.status_code == 200 and response.json():
@@ -50,7 +50,7 @@ def show_available_sales():
     """Show available sales from both Firebase and SQL Database."""
     # Fetch sales from Firebase
     firebase_sales = []
-    sale_ref = db.reference('sales')
+    sale_ref = db.reference('sales_data')
     all_sales = sale_ref.get()
     if all_sales:
         firebase_sales = [sale_id for sale_id in all_sales.keys()]
