@@ -8,3 +8,8 @@ google-cloud-firestore
 requests
 xlsxwriter
 python-dotenv
+google-cloud-storage
+google-cloud-core
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
