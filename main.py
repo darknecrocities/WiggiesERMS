@@ -221,10 +221,12 @@ def create_connection():
 
 def initialize_database():
     if not firebase_admin._apps:
-        firebase_admin.initialize_app(options={
-            'databaseURL': FIREBASE_DATABASE_URL
-        })
-    conn = create_connection()
+        firebase_admin.initialize_app(options={"databaseURL": FIREBASE_DATABASE_URL})
+
+    sqlite3.register_adapter(datetime.date, lambda d: d.isoformat())
+    sqlite3.register_converter("DATE", lambda s: datetime.date.fromisoformat(s.decode()))
+
+    conn = sqlite3.connect("database.db", detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     cursor = conn.cursor()
 
     # Create products table with expiration_date column
