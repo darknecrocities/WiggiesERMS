@@ -593,6 +593,7 @@ def main():
             if st.button("Sign Up"):
                 sign_up_with_email_and_password(email=email, password=password, username=username)
                 st.success("Account Created! You can now sign in.")
+                st.rerun()  # It will rerun the app after sign-up
 
         elif choice == "Forgot Password":
             st.subheader("🔒 Reset Password")
@@ -648,6 +649,7 @@ def main():
 
                 if st.button('Delete Sale'):
                     delete_sale_by_product_id(product_id_to_delete, merged_sales)  # Pass both arguments
+                    st.rerun()
             else:
                 st.write("No sales available for deletion.")
 
