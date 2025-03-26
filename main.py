@@ -625,18 +625,18 @@ def main():
         load_css()
 
         # Sidebar for navigation
-        menu = ["Add Sale", "Edit Sale", "View Sales", "View Sales by Date Range", "View Insights", "Export to Excel", "Delete Sale", "Sign Out"]
+        menu = ["Add Sale/Inventory", "Edit Sale/Inventory", "View Sales/Inventory", "View Sales/Inventory by Date Range", "View Insights", "Export to Excel", "Delete Sale/Inventory", "Sign Out"]
         choice = st.sidebar.selectbox("Select an option", menu)
 
-        if choice == "Add Sale":
-            st.subheader("Add a Sale")
+        if choice == "Add Sale/Inventory":
+            st.subheader("Add a Sale & Inventory")
             product_name = st.selectbox("Select Product", get_products()['item'].tolist())
             quantity = st.number_input("Quantity", min_value=1, value=1)
             date = st.date_input("Date of Sale")
             if st.button("Add Sale"):
                 add_sale(product_name, quantity, date)
 
-        elif choice == "Edit Sale":
+        elif choice == "Edit Sale & Inventory":
             st.subheader("Edit an Existing Sale")
             sale_id = st.number_input("Sale ID", min_value=1)
             new_quantity = st.number_input("New Quantity", min_value=1)
@@ -644,12 +644,12 @@ def main():
             if st.button("Update Sale"):
                 edit_sale(sale_id, new_quantity, new_date)
 
-        elif choice == "View Sales":
+        elif choice == "View Sales & Inventory":
             st.subheader("View Sales Records")
             sales_data = get_sales()
             st.dataframe(sales_data)
 
-        elif choice == "View Sales by Date Range":
+        elif choice == "View Sales & Inventory by Date Range":
             view_sales_by_date_range()
 
         elif choice == "View Insights":
@@ -658,7 +658,7 @@ def main():
         elif choice == "Export to Excel":
             export_to_excel()
 
-        elif choice == "Delete Sale":
+        elif choice == "Delete Sale & Inventory":
             available_sales = show_available_sales()  # Get sales data
             merged_sales = {}  # Flatten sales data
             for sales_dict in available_sales:
