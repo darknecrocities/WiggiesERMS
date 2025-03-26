@@ -51,19 +51,8 @@ def keep_alive(url, interval):
         time.sleep(interval)
     
 def show_available_sales():
-    """Show available sales from both Firebase and SQL Database with product IDs."""
-    firebase_sales = {}
+    """Show available sales from the SQL Database with product IDs."""
     sql_sales = {}
-
-    # Fetch sales from Firebase
-    sale_ref = db.reference('sales')
-    all_sales = sale_ref.get()
-
-    if all_sales:
-        for sale_id, data in all_sales.items():
-            product_id = data.get("product_id")  # Only get sales with product_id
-            if product_id is not None:  # Ensure product_id exists
-                firebase_sales[sale_id] = product_id
 
     # Fetch sales from SQL
     conn = create_connection()
@@ -72,10 +61,11 @@ def show_available_sales():
     sql_sales_raw = cursor.fetchall()  # List of tuples (sale_id, product_id)
     conn.close()
 
+    # Convert to dictionary format
     for sale_id, product_id in sql_sales_raw:
         sql_sales[sale_id] = product_id
 
-    return firebase_sales, sql_sales  # Returns two separate dictionaries
+    return sql_sales  # Returns a dictionary of sales from SQL only
 
 
 # Function to fetch data in real-time
@@ -383,18 +373,6 @@ def edit_sale(sale_id, new_quantity, new_date):
 # Function to delete a sale
 def delete_sale_by_product_id(product_id):
     """Delete all sales that match the given product ID in SQL and Firebase."""
-    success = False
-
-    # ✅ Delete from Firebase
-    sale_ref = db.reference('sales')
-    all_sales = sale_ref.get()
-
-    if all_sales:
-        for sale_id, sale_data in all_sales.items():
-            if sale_data.get('product_id') == product_id:
-                db.reference(f'sales/{sale_id}').delete()
-                st.success(f"Sale {sale_id} deleted from Firebase!")
-                success = True
 
     # ✅ Delete from SQL
     conn = create_connection()
@@ -657,15 +635,11 @@ def main():
         elif choice == "Export to Excel":
             export_to_excel()
 
-        elif choice == "Delete Sale/Inventory":
-            available_sales = show_available_sales()  # Get sales data from SQL
-            merged_sales = {}  # Flatten sales data
-
-            for sales_dict in available_sales:
-                merged_sales.update(sales_dict)
-
-            if merged_sales:
-                product_ids = list(set(merged_sales.values()))  # Get unique product IDs
+                elif choice == "Delete Sale/Inventory":
+            available_sales = show_available_sales()  # Get sales data from SQL (returns dictionary)
+            
+            if available_sales:  # Check if there are sales
+                product_ids = list(set(available_sales.values()))  # Get unique product IDs
                 product_id_to_delete = st.selectbox('Select Product ID to Delete:', product_ids)
 
                 if st.button('Delete Sale & Inventory'):
