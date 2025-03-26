@@ -635,13 +635,13 @@ def main():
         elif choice == "Export to Excel":
             export_to_excel()
 
-                elif choice == "Delete Sale/Inventory":
+        elif choice == "Delete Sale/Inventory":
             available_sales = show_available_sales()  # Get sales data from SQL (returns dictionary)
             
             if available_sales:  # Check if there are sales
                 product_ids = list(set(available_sales.values()))  # Get unique product IDs
                 product_id_to_delete = st.selectbox('Select Product ID to Delete:', product_ids)
-
+        
                 if st.button('Delete Sale & Inventory'):
                     delete_sale_by_product_id(product_id_to_delete)  # Now only deletes from SQL
                     st.rerun()
