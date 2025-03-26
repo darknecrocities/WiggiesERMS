@@ -433,7 +433,7 @@ def get_sales():
     return sales_data
 
 def view_sales_by_date_range():
-    st.subheader("View Sales Report by Date Range")
+    st.subheader("View Sales & Inventory Report by Date Range")
 
     # Let the user select a date range
     start_date = st.date_input("Start Date")
@@ -636,20 +636,20 @@ def main():
             if st.button("Add Sale"):
                 add_sale(product_name, quantity, date)
 
-        elif choice == "Edit Sale & Inventory":
-            st.subheader("Edit an Existing Sale")
+        elif choice == "Edit Sale/Inventory":
+            st.subheader("Edit an Existing Sale & Inventory")
             sale_id = st.number_input("Sale ID", min_value=1)
             new_quantity = st.number_input("New Quantity", min_value=1)
             new_date = st.date_input("New Date of Sale")
             if st.button("Update Sale"):
                 edit_sale(sale_id, new_quantity, new_date)
 
-        elif choice == "View Sales & Inventory":
-            st.subheader("View Sales Records")
+        elif choice == "View Sales/Inventory":
+            st.subheader("View Sales & records Records")
             sales_data = get_sales()
             st.dataframe(sales_data)
 
-        elif choice == "View Sales & Inventory by Date Range":
+        elif choice == "View Sales/Inventory by Date Range":
             view_sales_by_date_range()
 
         elif choice == "View Insights":
@@ -658,7 +658,7 @@ def main():
         elif choice == "Export to Excel":
             export_to_excel()
 
-        elif choice == "Delete Sale & Inventory":
+        elif choice == "Delete Sale/Inventory":
             available_sales = show_available_sales()  # Get sales data
             merged_sales = {}  # Flatten sales data
             for sales_dict in available_sales:
@@ -668,7 +668,7 @@ def main():
                 product_ids = list(set(merged_sales.values()))  # Get unique product IDs
                 product_id_to_delete = st.selectbox('Select Product ID to Delete:', product_ids)
 
-                if st.button('Delete Sale'):
+                if st.button('Delete Sale & Inventory'):
                     delete_sale_by_product_id(product_id_to_delete, merged_sales)  # Pass both arguments
                     st.rerun()
             else:
