@@ -381,22 +381,22 @@ def edit_sale(sale_id, new_quantity, new_date):
         st.error("Sale ID not found!")
 
 # Function to delete a sale
-def delete_sale_by_product_id(product_id, sales_data):
-    """Delete all sales that match the given product ID."""
+def delete_sale_by_product_id(product_id):
+    """Delete all sales that match the given product ID in SQL and Firebase."""
     success = False
-    
-    # Check and delete from Firebase
+
+    # ✅ Delete from Firebase
     sale_ref = db.reference('sales')
     all_sales = sale_ref.get()
-    
+
     if all_sales:
-        for sale_id, prod_id in all_sales.items():
-            if prod_id == product_id:
+        for sale_id, sale_data in all_sales.items():
+            if sale_data.get('product_id') == product_id:
                 db.reference(f'sales/{sale_id}').delete()
                 st.success(f"Sale {sale_id} deleted from Firebase!")
                 success = True
 
-    # Check and delete from SQL
+    # ✅ Delete from SQL
     conn = create_connection()
     cursor = conn.cursor()
 
@@ -411,10 +411,9 @@ def delete_sale_by_product_id(product_id, sales_data):
 
     conn.close()
 
+    # ✅ Display message if no records were found
     if not success:
         st.error(f"No sales found for product {product_id} in either database.")
-
-
         
 def get_products():
     conn = create_connection()
@@ -659,8 +658,9 @@ def main():
             export_to_excel()
 
         elif choice == "Delete Sale/Inventory":
-            available_sales = show_available_sales()  # Get sales data
+            available_sales = show_available_sales()  # Get sales data from SQL
             merged_sales = {}  # Flatten sales data
+
             for sales_dict in available_sales:
                 merged_sales.update(sales_dict)
 
@@ -669,7 +669,7 @@ def main():
                 product_id_to_delete = st.selectbox('Select Product ID to Delete:', product_ids)
 
                 if st.button('Delete Sale & Inventory'):
-                    delete_sale_by_product_id(product_id_to_delete, merged_sales)  # Pass both arguments
+                    delete_sale_by_product_id(product_id_to_delete)  # Now only deletes from SQL
                     st.rerun()
             else:
                 st.write("No sales available for deletion.")
