@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Streamlit App
-        run: curl -s -o /dev/null -w "%{http_code}" https://your-streamlit-app-url.streamlit.app
+        run: curl -s -o /dev/null -w "%{http_code}" https://wiggiesicecream.streamlit.app/
