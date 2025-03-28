@@ -111,7 +111,16 @@ The system is structured into three core layers:
 - **Stock Replenishment Predictions**  
 
 #### **🔍 Data Visualization Tools**  
-- **Bar Charts, Line Graphs, Heatmaps** (Powered by Matplotlib & Plotly).  
+- **Bar Charts, Line Graphs, Heatmaps** (Powered by Matplotlib & Plotly).
+- **Data Piplines, Api Pipelines** build by Javascript 
+
+---
+
+
+## ☁📳 **5. Realtime Notification**  
+
+❗️ **Email Notification** (powered by Ruby).  
+☁️ **Realtime monitoring** data notification.  
 
 ---
 
@@ -133,7 +142,7 @@ The system is structured into three core layers:
 
 ## 🎯 **7. Conclusion**  
 
-The **Wiggies Management System** is an **enterprise-grade** solution that integrates **Python, Haskell, SQL, Firebase, and Streamlit**.  
+The **Wiggies Management System** is an **enterprise-grade** solution that integrates **Python, Haskell, SQL, Firebase, Ruby, JS and Streamlit**.  
 It provides **real-time business insights, automated database management, and a cloud-based authentication system**, making it an essential tool for businesses.  
 
 ### 🚀 **Future Enhancements:**  
