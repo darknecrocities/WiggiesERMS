@@ -142,7 +142,7 @@ The system is structured into three core layers:
 
 ## 🎯 **7. Conclusion**  
 
-The **Wiggies Management System** is an **enterprise-grade** solution that integrates **Python, Haskell, SQL, Firebase, Ruby, JS and Streamlit**.  
+The **Wiggies Management System** is an **enterprise-grade** solution that integrates **Python, CSS , Haskell, SQL, Firebase, Ruby, JS and Streamlit**.  
 It provides **real-time business insights, automated database management, and a cloud-based authentication system**, making it an essential tool for businesses.  
 
 ### 🚀 **Future Enhancements:**  
