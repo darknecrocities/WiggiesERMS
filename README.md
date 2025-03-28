@@ -1,30 +1,34 @@
-## Wiggies Management System 🍦📊
+# **Wiggies Management System** 🍦📊  
 
-=========================================
-             Table of Contents
-=========================================
+📅 **Version:** 1.0  
+🛠️ **Developers:** Parejas, Arron Kian M. | Marquez, Jian Kalel  
+🎨 **Documentation & Design:** Jimenez, Graciella Mhervie | Tongol, Jennica Sarah | Bermudo, Jeanne Claris  
 
-1. Introduction
-2. System Overview
-3. Backend Architecture
-   - Inventory Management
-   - Sales Management
-   - Database Management (SQL & Firebase)
-   - Automation & Version Control with Haskell
-4. Frontend Architecture
-   - User Interface (Streamlit)
-   - Business Insights & Data Analytics
-5. Cloud Integration & Authentication (Firebase)
-6. Deployment & Hosting
-7. Conclusion
+---
 
-=========================================
-             1. Introduction
-=========================================
+## 📖 **Table of Contents**  
+1. [Introduction](#introduction)  
+2. [System Overview](#system-overview)  
+3. [Backend Architecture](#backend-architecture)  
+   - [Inventory Management](#inventory-management)  
+   - [Sales Management](#sales-management)  
+   - [Database Management (SQL & Firebase)](#database-management-sql--firebase)  
+   - [Automation & Version Control (Haskell)](#automation--version-control-haskell)  
+4. [Frontend Architecture](#frontend-architecture)  
+   - [User Interface (Streamlit)](#user-interface-streamlit)  
+   - [Business Insights & Data Analytics](#business-insights--data-analytics)  
+5. [Cloud Integration & Authentication](#cloud-integration--authentication)  
+6. [Deployment & Hosting](#deployment--hosting)  
+7. [Conclusion](#conclusion)  
 
-The Wiggies Management System is an advanced Enterprise Resource Management System (ERMS) designed for efficient inventory and sales management. It integrates Python and Haskell for backend processing, utilizes SQL databases and Firebase for secure data storage, and is built on Streamlit for a user-friendly web-based dashboard.
+---
 
-**Key Features**
+## 🏆 **1. Introduction**  
+
+The **Wiggies Management System** is an advanced **Enterprise Resource Management System (ERMS)** designed for efficient inventory and sales management.  
+It integrates **Python** and **Haskell** for backend processing, **SQL databases & Firebase** for secure data storage, and is built on **Streamlit** for a user-friendly web-based dashboard.  
+
+### **Key Features**  
 ✅ Inventory & Sales Tracking  
 ✅ Database Integration (SQL & Firebase)  
 ✅ Automation with Haskell-based Version Control  
@@ -32,105 +36,109 @@ The Wiggies Management System is an advanced Enterprise Resource Management Syst
 ✅ Secure Authentication System  
 ✅ Hosted on Streamlit Cloud  
 
-=========================================
-             2. System Overview
-=========================================
+---
 
-The system is structured into three core layers:
+## 📌 **2. System Overview**  
+
+The system is structured into three core layers:  
 
 1️⃣ **Backend (Data Processing & Business Logic)**  
    - Handles inventory updates, sales transactions, and business insights.  
-   - Uses Haskell for database operations with automated package updates.  
+   - Uses **Haskell** for database operations with automated package updates.  
 
 2️⃣ **Frontend (User Interaction & Visualization)**  
-   - Streamlit-powered dashboard for real-time data visualization.  
-   - Sales and inventory reports with charts, tables, and insights.  
+   - **Streamlit-powered** dashboard for real-time data visualization.  
+   - Sales and inventory reports with **charts, tables, and insights**.  
 
 3️⃣ **Cloud & Database Management**  
-   - SQL database for structured data storage.  
-   - Firebase for cloud storage, authentication, and real-time synchronization.  
+   - **SQL database** for structured data storage.  
+   - **Firebase** for cloud storage, authentication, and real-time synchronization.  
 
-=========================================
-             3. Backend Architecture
-=========================================
+---
 
-📌 **Inventory Management**  
-   - Tracks products, categories, suppliers, and stock levels.  
-   - Real-time stock monitoring to prevent shortages.  
-   - Automated alerts for low stock levels.  
-   - CSV import/export functionality for bulk inventory management.  
+## ⚙️ **3. Backend Architecture**  
 
-📌 **Sales Management**  
-   - Logs sales transactions with timestamps and product details.  
-   - Calculates total sales, costs, and profits in real-time.  
-   - Generates detailed reports on revenue performance.  
+### 📦 **Inventory Management**  
+- Tracks **products, categories, suppliers, and stock levels**.  
+- Real-time **stock monitoring** to prevent shortages.  
+- **Automated alerts** for low stock levels.  
+- **CSV import/export** functionality for bulk inventory management.  
 
-📌 **Database Management (SQL & Firebase)**  
-   **SQL Database (PostgreSQL/MySQL)**  
-   - Stores inventory, transactions, and user data.  
-   - Optimized queries for fast retrieval of reports and analytics.  
+### 💰 **Sales Management**  
+- Logs **sales transactions** with timestamps and product details.  
+- Calculates **total sales, costs, and profits** in real-time.  
+- Generates detailed **revenue performance reports**.  
 
-   **Firebase (Cloud Firestore & Authentication)**  
-   - Real-time updates for sales and inventory data.  
-   - Secure authentication with multi-user roles (Admin, Staff, Viewer).  
+### 🗄 **Database Management (SQL & Firebase)**  
 
-📌 **Automation & Version Control with Haskell**  
-   ✅ Ensures system stability by using only verified stable packages.  
-   ✅ Reduces manual maintenance efforts through automation.  
+#### **SQL Database (PostgreSQL/MySQL)**  
+- Stores **inventory, transactions, and user data**.  
+- Optimized **queries** for fast retrieval of reports and analytics.  
 
-=========================================
-             4. Frontend Architecture
-=========================================
+#### **Firebase (Cloud Firestore & Authentication)**  
+- **Real-time updates** for sales and inventory data.  
+- Secure **authentication** with **multi-user roles** (Admin, Staff, Viewer).  
 
-📌 **User Interface (Streamlit)**  
-   - Live inventory tracking with filtering and search options.  
-   - Sales monitoring with daily, weekly, and monthly reports.  
-   - Business insights and analytics with real-time data visualizations.  
+### 🔄 **Automation & Version Control with Haskell**  
+✅ Ensures **system stability** by using only **verified stable packages**.  
+✅ Reduces **manual maintenance efforts** through automation.  
 
-📌 **Business Insights & Data Analytics**  
+---
 
-📊 **Financial Overview**  
-   - Total Sales  
-   - Total Cost  
-   - Total Profit  
+## 🎨 **4. Frontend Architecture**  
 
-📈 **Performance Metrics**  
-   - Top 5 Best-Selling Products  
-   - Product Popularity Rankings  
-   - Highest Revenue-Generating Products  
-   - Product Quantity Analysis  
+### 🖥 **User Interface (Streamlit)**  
+- **Live inventory tracking** with filtering and search options.  
+- **Sales monitoring** with daily, weekly, and monthly reports.  
+- **Business insights & analytics** with real-time data visualizations.  
 
-📉 **Trends & Insights**  
-   - Seasonal Sales Trends  
-   - Peak Business Hours Analysis  
-   - Stock Replenishment Predictions  
+### 📊 **Business Insights & Data Analytics**  
 
-🔍 **Data Visualization Tools**  
-   - Bar Charts, Line Graphs, Heatmaps (Powered by Matplotlib & Plotly).  
+#### **💰 Financial Overview**  
+- **Total Sales**  
+- **Total Cost**  
+- **Total Profit**  
 
-=========================================
-      5. Cloud Integration & Authentication
-=========================================
+#### **📈 Performance Metrics**  
+- **Top 5 Best-Selling Products**  
+- **Product Popularity Rankings**  
+- **Highest Revenue-Generating Products**  
+- **Product Quantity Analysis**  
 
-🔐 Secure multi-user authentication (Admin, Staff, Viewer).  
-☁️ Cloud-based sales and inventory data backup.  
-📂 Storage for reports, receipts, and invoices.  
+#### **📉 Trends & Insights**  
+- **Seasonal Sales Trends**  
+- **Peak Business Hours Analysis**  
+- **Stock Replenishment Predictions**  
 
-=========================================
-            6. Deployment & Hosting
-=========================================
+#### **🔍 Data Visualization Tools**  
+- **Bar Charts, Line Graphs, Heatmaps** (Powered by Matplotlib & Plotly).  
 
-✅ Hosted on Streamlit Cloud for easy web access.  
-✅ Continuous Integration & Deployment (CI/CD) pipeline using GitHub Actions.  
-✅ SSL-secured web application for safe and encrypted data transfer.  
+---
 
-=========================================
-            7. Conclusion
-=========================================
+## ☁️ **5. Cloud Integration & Authentication**  
 
-The Wiggies Management System is an enterprise-grade solution that integrates Python, Haskell, SQL, Firebase, and Streamlit. It provides real-time business insights, automated database management, and a cloud-based authentication system, making it an essential tool for businesses.
+🔐 **Secure multi-user authentication** (Admin, Staff, Viewer).  
+☁️ **Cloud-based** sales and inventory data backup.  
+📂 **Storage for reports, receipts, and invoices**.  
 
-🚀 **Future Enhancements:**  
-🔹 AI-driven sales predictions.  
-🔹 Advanced customer segmentation & marketing insights.  
-🔹 Mobile app integration for on-the-go access.  
+---
+
+## 🚀 **6. Deployment & Hosting**  
+
+✅ Hosted on **Streamlit Cloud** for easy web access.  
+✅ **CI/CD pipeline** using **GitHub Actions**.  
+✅ **SSL-secured** web application for **safe & encrypted data transfer**.  
+
+---
+
+## 🎯 **7. Conclusion**  
+
+The **Wiggies Management System** is an **enterprise-grade** solution that integrates **Python, Haskell, SQL, Firebase, and Streamlit**.  
+It provides **real-time business insights, automated database management, and a cloud-based authentication system**, making it an essential tool for businesses.  
+
+### 🚀 **Future Enhancements:**  
+🔹 AI-driven **sales predictions**.  
+🔹 Advanced **customer segmentation & marketing insights**.  
+🔹 **Mobile app integration** for on-the-go access.  
+
+---
