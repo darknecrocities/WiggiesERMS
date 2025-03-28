@@ -1,4 +1,4 @@
-Wiggies Management System - Documentation
+## Wiggies Management System 🍦📊
 
 =========================================
              Table of Contents
