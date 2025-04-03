@@ -615,7 +615,7 @@ def main():
 
         elif choice == "Edit Sale/Inventory":
             st.subheader("Edit an Existing Sale & Inventory")
-            sale_id = st.number_input("Sale ID", min_value=1)
+            sale_id = st.number_input("ID", min_value=1)
             new_quantity = st.number_input("New Quantity", min_value=1)
             new_date = st.date_input("New Date of Sale")
             if st.button("Update Sale"):
