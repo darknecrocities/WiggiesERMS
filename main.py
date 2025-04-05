@@ -464,7 +464,8 @@ def view_insights():
 
     sales_data["total_profit"] = pd.to_numeric(sales_data["total_profit"], errors='coerce')
     sales_data["total_sales"] = pd.to_numeric(sales_data["total_sales"], errors='coerce')
-    sales_data = sales_data.dropna(subset=["total_profit", "total_sales"])
+    sales_data["quantity"] = pd.to_numeric(sales_data["quantity"], errors='coerce')
+    sales_data = sales_data.dropna(subset=["total_profit", "total_sales", "quantity"])
 
     total_sales = sales_data["total_sales"].sum()
     total_profit = sales_data["total_profit"].sum()
@@ -472,10 +473,12 @@ def view_insights():
     st.metric("Total Sales", f"₱{total_sales:,.2f}")
     st.metric("Total Profit", f"₱{total_profit:,.2f}")
 
+    # Sales by Category
     category_sales = sales_data.groupby("category")["total_sales"].sum()
     st.subheader("Sales by Category (Bar Chart)")
     st.bar_chart(category_sales)
 
+    # Sales Distribution by Category
     st.subheader("Sales Distribution by Category (Pie Chart)")
     category_sales_pie = category_sales.reset_index()
     fig, ax = plt.subplots()
@@ -483,17 +486,49 @@ def view_insights():
     ax.axis('equal')
     st.pyplot(fig)
 
+    # Sales Over Time
     st.subheader("Sales Over Time (Line Chart)")
     sales_data_by_date = sales_data.groupby("date")["total_sales"].sum()
     st.line_chart(sales_data_by_date)
 
+    # Profit by Product
     st.subheader("Profit by Product (Bar Chart)")
     product_profit = sales_data.groupby("item")["total_profit"].sum().sort_values(ascending=False)
     st.bar_chart(product_profit)
 
+    # Sales Quantity by Category
     st.subheader("Sales Quantity by Category (Bar Chart)")
     category_quantity = sales_data.groupby("category")["quantity"].sum()
     st.bar_chart(category_quantity)
+
+    # --- New Features ---
+    
+    # Top 5 Best-Selling Products
+    st.subheader("Top 5 Best-Selling Products (Bar Chart)")
+    top_products = sales_data.groupby("item")["total_sales"].sum().nlargest(5)
+    st.bar_chart(top_products)
+
+    # Top 5 Worst-Selling Products
+    st.subheader("Top 5 Worst-Selling Products (Bar Chart)")
+    worst_products = sales_data.groupby("item")["total_sales"].sum().nsmallest(5)
+    st.bar_chart(worst_products)
+
+    # Top 5 Most Profitable Products
+    st.subheader("Top 5 Most Profitable Products (Bar Chart)")
+    top_profitable_products = sales_data.groupby("item")["total_profit"].sum().nlargest(5)
+    st.bar_chart(top_profitable_products)
+
+    # Average Sales & Profit per Category
+    st.subheader("Average Sales & Profit per Category")
+    avg_sales_profit = sales_data.groupby("category")[["total_sales", "total_profit"]].mean()
+    st.dataframe(avg_sales_profit)
+
+    # Monthly Sales Trend
+    st.subheader("Monthly Sales Trend (Line Chart)")
+    sales_data["date"] = pd.to_datetime(sales_data["date"], errors='coerce')
+    sales_data["month"] = sales_data["date"].dt.to_period("M")
+    monthly_sales = sales_data.groupby("month")["total_sales"].sum()
+    st.line_chart(monthly_sales)
 
     # Expiration Insights
     st.subheader("Product Expiration Overview")
